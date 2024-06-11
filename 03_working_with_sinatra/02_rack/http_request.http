@@ -1,7 +1,14 @@
 
 # bundle exec rackup config.ru -p 9595
 
-curl -X GET http://localhost:9595/hi -m 30 -v
+###
+curl -X GET http://localhost:9595/ -m 30 -v
+
+###
+curl -X GET http://localhost:9595/advice -m 30 -v
+
+###
+curl -X GET http://localhost:9595/non-existant -m 30 -v
 
 #response
 {

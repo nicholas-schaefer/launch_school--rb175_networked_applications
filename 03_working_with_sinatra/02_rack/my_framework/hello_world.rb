@@ -4,60 +4,33 @@ class HelloWorld
   def call(env)
     case env['REQUEST_PATH']
     when '/'
-    html = <<~HTML
-    <!DOCTYPE html>
-    <html lang="en">
-      <head>
-        <title>home</title>
-        <meta charset="utf-8">
-      </head>
-      <body>
-        <h2>Hello World!</h2>
-      </body>
-    </html>
-    HTML
-    [
-      '200',
-      {'Content-Type' => 'text/html'},
-      [html]
-    ]
+      ['200', {"Content-Type" => "text/html"}, [erb(:index)]]
     when '/advice'
-    piece_of_advice = Advice.new.generate    # random piece of advice
-    html = <<~HTML
-    <!DOCTYPE html>
-    <html lang="en">
-      <head>
-        <title>Advice</title>
-        <meta charset="utf-8">
-      </head>
-      <body>
-        <em><strong>#{piece_of_advice}</strong></em>
-      </body>
-    </html>
-    HTML
-    [
-      '200',
-      {'Content-Type' => 'text/html'},
-      [html]
-    ]
+      piece_of_advice = Advice.new.generate
+      [
+        '200',
+        {"Content-Type" => 'text/html'},
+        [erb(:advice, message: piece_of_advice)]
+        # ["<html><body><b><em>#{piece_of_advice}</em></b></body></html>"]
+      ]
     else
-    html = <<~HTML
-    <!DOCTYPE html>
-    <html lang="en">
-      <head>
-        <title>404</title>
-        <meta charset="utf-8">
-      </head>
-      <body>
-        <h4>404 Not Found</h4>
-      </body>
-    </html>
-    HTML
-    [
-      '404',
-      {'Content-Type' => 'text/html', 'Content-Length' => '156'},
-      [html]
-    ]
+      [
+        '404',
+        {"Content-Type" => 'text/html', "Content-Length" => '48'},
+        ["<html><body><h4>404 Not Found</h4></body></html>"]
+      ]
     end
+  end
+  private
+  # def erb(filename)
+  #   content = File.read("views/#{filename}.erb")
+  #   ERB.new(content).result
+  # end
+
+  def erb(filename, local = {})
+    b = binding
+    message = local[:message]
+    content = File.read("views/#{filename}.erb")
+    ERB.new(content).result(b)
   end
 end
