@@ -10,9 +10,9 @@ require 'tilt/erubis'
     <title><%= @title %></title>
     # <title>The Adventures of Sherlock Holmes</title>
 
-    <link rel="stylesheet" href="stylesheets/pure-min.css">
-    <link rel="stylesheet" href="stylesheets/fonts.css">
-    <link rel="stylesheet" href="stylesheets/book_viewer.css">
+    <link rel="stylesheet" href="/stylesheets/pure-min.css">
+    <link rel="stylesheet" href="/stylesheets/fonts.css">
+    <link rel="stylesheet" href="/stylesheets/book_viewer.css">
 </head>
 
 <body>
@@ -43,35 +43,10 @@ require 'tilt/erubis'
         </div>
 
         <div class="content">
-
-          <ul>
-            <% @public_files.each do |file| %>
-              <li>
-                <a href="/<%= file %>"><%= file %></a>
-              </li>
-            <% end %>
-          </ul>
-
-          <p>
-          <% if params[:sort] == "desc" %>
-            <a href="/">Sort ascending</a>
-          <% else %>
-            <a href="/?sort=desc">Sort descending</a>
-          <% end %>
-          </p>
-
-
           <h2 class="content-subhead">Table of Contents</h2>
-
-          <div class="pure-menu">
-            <ul class="pure-menu-list">
-              <% @contents.each do |chapter| %>
-                <li class="pure-menu-item">
-                  <a href="#" class="pure-menu-link"><%= chapter %></a>
-                </li>
-              <% end %>
-            </ul>
-          </div>
+          <% @chapter.each.with_index do |chapter, idx| %>
+            <p id = "paragraph<%= idx %>"><%= chapter %></p>
+          <% end %>
         </div>
       </div>
   </div>
