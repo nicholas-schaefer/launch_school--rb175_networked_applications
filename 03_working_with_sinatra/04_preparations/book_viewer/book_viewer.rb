@@ -1,9 +1,22 @@
 require "sinatra"
 require "sinatra/reloader"
 
+helpers do
+  def in_paragraphs(text)
+    text
+    .split("\n\n")
+    .map{ |paragraph| paragraph.gsub("\n", " ")
+    .prepend("<p>").concat("</p>") }
+    .join()
+  end
+end
+
+before do
+  @contents = File.readlines("data/toc.txt")
+end
+
 get "/" do
   @title = "The Adventures of Sherlock Holmes"
-  @contents = File.readlines("data/toc.txt")
   @public_file_local_paths = Dir["public/*"].reject{ |file| File.directory?(file) }
   @public_files = @public_file_local_paths.map{ |file| File.basename(file) }
 
@@ -13,8 +26,6 @@ get "/" do
 end
 
 get "/chapters/:number" do
-  @contents = File.readlines("data/toc.txt")
-
   number = params[:number].to_i
   chapter_name = @contents[number - 1]
   @title = "Chapter #{number}: #{chapter_name}"
