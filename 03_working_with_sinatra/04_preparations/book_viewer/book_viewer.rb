@@ -28,21 +28,16 @@ end
 get "/chapters/:number" do
   number = params[:number].to_i
   chapter_name = @contents[number - 1]
+
+  redirect "/" unless (1..@contents.size).cover? number
+
   @title = "Chapter #{number}: #{chapter_name}"
-
-  # this will throw error for page not fount
   @chapter = File.read("data/chp#{number}.txt")
-  # @chapter = File.exist?("data/chp#{number}.txt") ? File.read("data/chp#{number}.txt") : ""
-
 
   erb :chapter
 end
 
 
-# get "/chapters/1" do
-#   @title = "Chapter 1"
-#   @contents = File.readlines("data/toc.txt")
-#   @chapter = File.read("data/chp1.txt").split("\n\n").map{ |paragraph| paragraph.gsub("\n", " ") }
-
-#   erb :chapter
-# end
+not_found do
+  redirect "/"
+end
