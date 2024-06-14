@@ -69,7 +69,6 @@ end
 
 get "/search" do
 
-  # @user_query_msg == ""
   @chapters_collection_filtered = {}
 
   if params[:query]
@@ -81,11 +80,11 @@ get "/search" do
         Regexp.new(@query) =~ File.read(chapter_values[:path])
       end)
 
-      @user_query_msg =
-        @chapters_collection_filtered.empty? ? "Sorry, no matches were found" : "Results for '#{@query}'"
-    # @user_query_msg = "Results for"
-    # Results for <%= "'#{@query}'" %>
-      # binding.pry
+    @user_query_msg =
+      @chapters_collection_filtered.empty? ? "Sorry, no matches were found" : "Results for '#{@query}'"
+  # @user_query_msg = "Results for"
+  # Results for <%= "'#{@query}'" %>
+    # binding.pry
   end
 
   erb :search
