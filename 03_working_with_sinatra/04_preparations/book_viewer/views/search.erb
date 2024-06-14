@@ -1,0 +1,18 @@
+<h2 class="content-subhead">Search</h2>
+
+<form action="/search" method="get">
+  <input name="query" value="<%= params[:query] %>">
+  <button type="submit">Search</button>
+</form>
+
+<p><%= @user_query_msg %></p>
+
+
+<ul>
+  <% @chapters_collection_filtered.each do | _idx, matched_chapter | %>
+    <li>
+      <a href="/chapters/<%= matched_chapter[:number] %>" class="pure-menu-link"><%= matched_chapter[:title] %></a>
+    </li>
+  <% end %>
+</ul>
+
