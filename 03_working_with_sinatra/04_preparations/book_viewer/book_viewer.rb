@@ -6,8 +6,7 @@ helpers do
   def in_paragraphs(text)
     text
     .split("\n\n")
-    .map{ |paragraph| paragraph.gsub("\n", " ")
-    .prepend("<p>").concat("</p>") }
+    .map.with_index{ |paragraph, idx| paragraph.gsub("\n", " ").prepend("<p id=#paragraph#{idx}>").concat("</p>") }
     .join()
   end
 end
