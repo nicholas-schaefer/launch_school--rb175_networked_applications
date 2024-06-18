@@ -4,8 +4,9 @@ require 'pry'
 require "psych"
 
 helpers do
-  # def in_list()
-  # end
+  def comma_separated(text)
+    text.join(", ")
+  end
 end
 
 before do
@@ -22,11 +23,13 @@ get "/users" do
 end
 
 get "/users/:name" do
- name = params[:name]
+  @user_name =        params[:name]
+  return "user not found" unless @users.keys.any?(@user_name.to_sym)
 
- return "user not found" unless @users.keys.any?(name.to_sym)
-  "User found!"
+  @user_email =       @users[@user_name.to_sym][:email]
+  @user_interests =   @users[@user_name.to_sym][:interests]
 
+  erb :user
 end
 
 # get "/chapters/:number" do
