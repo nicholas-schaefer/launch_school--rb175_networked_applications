@@ -1,0 +1,17 @@
+<p>Home is where the heart is</p>
+
+
+
+
+<pre>
+<%= @users.keys %>
+</pre>
+
+<ul>
+  <% @users.keys.each do |user| %>
+  <li>
+    <a href=users/<%= user%>><%= user %></a>
+  </li>
+  <% end %>
+</ul>
+
