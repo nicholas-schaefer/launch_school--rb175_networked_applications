@@ -79,9 +79,27 @@ get "/search" do
         Regexp.new(@query) =~ File.read(chapter_values[:path])
       end)
 
-    @user_query_msg =
-      @chapters_collection_filtered.empty? ? "Sorry, no matches were found" : "Results for '#{@query}'"
-  # @user_query_msg = "Results for"
+    @chapters_collection_with_paragraphs_filtered =
+      @chapters_collection_filtered.map.with_object({}) do |(id, sub_hash), generated_hash|
+        # sub_hash[:path]
+
+        chapter_paragraphs =
+          File.read(sub_hash[:path])
+          .split("\n\n")
+          .map{ |paragraph| paragraph.gsub("\n", " ")}
+
+        matched_paragraphs = (chapter_paragraphs.filter_map do |paragraph|
+          if Regexp.new(@query) =~ paragraph
+            paragraph.gsub(@query, "<strong>#{@query}</strong>")
+          end
+        end)
+        matched_paragraphs.flatten!
+
+        sub_hash[:paragraphs] = matched_paragraphs
+        generated_hash[id] = sub_hash
+      end
+
+  @user_query_msg = "Results for `#{@query}`"
   # Results for <%= "'#{@query}'" %>
     # binding.pry
   end

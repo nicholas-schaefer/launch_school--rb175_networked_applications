@@ -5,17 +5,19 @@
   <button type="submit">Search</button>
 </form>
 
-<p><%= @user_query_msg %></p>
+<h2><%= @user_query_msg %></h2>
 
 
 <ul>
-  <% @chapters_collection_filtered.each do | idx, matched_chapter | %>
+  <% @chapters_collection_with_paragraphs_filtered&.each do | idx, matched_chapter | %>
     <li>
       <a href="/chapters/<%= matched_chapter[:number] %>" id="paragraph<%= idx%>"class="pure-menu-link"><%= matched_chapter[:title] %></a>
     </li>
+      <% matched_chapter[:paragraphs].each do | matched_paragraph | %>
       <ul>
-        <li><%= matched_chapter[:title] %></li>
+        <li><%= matched_paragraph %></li>
       </ul>
+      <% end %>
   <% end %>
 </ul>
 
