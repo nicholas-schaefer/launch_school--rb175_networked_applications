@@ -4,3 +4,11 @@
 
 <p>interests: <%= comma_separated(@user_interests) %></p>
 
+<ul>
+  <% @all_other_users.keys.each do |user| %>
+  <li>
+    <a href="/users/<%= user%>"><%= user %></a>
+  </li>
+  <% end %>
+</ul>
+
